@@ -207,9 +207,8 @@ class SqlProcessorBase(RecordProcessor):
     ) -> str:
         """Return the name of the SQL table for the given stream."""
         table_prefix = self.cache.table_prefix or ""
-
-        # TODO: Add default prefix based on the source name.
-
+        if not table_prefix or not table_prefix.strip():
+            table_prefix = self._source_name
         return self.normalizer.normalize(
             f"{table_prefix}{stream_name}{self.cache.table_suffix}",
         )
